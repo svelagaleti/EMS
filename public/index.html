@@ -29,7 +29,25 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
 	$(document).ready(function() {
-		alert("JQUERY");
+		var mail = sessionStorage.getItem("userMail");
+		alert(mail);
+		var name = sessionStorage.getItem("userName");
+		alert(name);
+		if(sessionStorage.getItem("userMail") !== null){
+			$('#feedbackMailAddress').html("<input type=\"email\" value=\""+sessionStorage.getItem("userMail")+"\" name=\"email\" id=\"feedBakerMail\" class=\"form-control\" required=\"required\" disabled=\"disabled\">");
+			$('#feedbackGiverName').html("<input type=\"text\" value=\""+sessionStorage.getItem("userName")+"\" name=\"name\" id=\"feedBakerName\" class=\"form-control\" required=\"required\" disabled=\"disabled\">");
+			$('#sessionCheckLogin').html("<ul class=\"nav navbar-nav navbar-right\">"+
+					"<li class=\"scroll active\"><a href=\"#home\">Home</a></li>"+
+					"<li class=\"scroll\"><a href=\"#explore\">Events</a></li>"+
+					"<li class=\"scroll\"><a href=\"#about\">About</a></li>"+
+					"<li class=\"no-scroll\"><a href=\"#reg\">Register ur event</a></li>"+
+					"<li><a class=\"no-scroll\" href=\"#contact\">organisers</a></li>"+
+					"<li class=\"scroll\"><a href=\"#contact\">Contact</a></li>"+
+					"<li class=\"no-scroll\"><a href=\"\">My Account</a></li>"+
+					"</ul>");
+		}
+		
+		
 		$("#feedbackBtn").click(function() {
 			alert("feedback button");
 			$.post("/submitFeedback", {
@@ -71,7 +89,7 @@
 							class="img-responsive" src="../images/logo.png" alt="logo">
 						</a>
 					</div>
-					<div class="collapse navbar-collapse">
+					<div class="collapse navbar-collapse" id="sessionCheckLogin">
 						<ul class="nav navbar-nav navbar-right">
 							<li class="scroll active"><a href="#home">Home</a></li>
 							<li class="scroll"><a href="#explore">Events</a></li>
@@ -80,6 +98,7 @@
 							<li class="no-scroll"><a href="#reg">Register ur event</a></li>
 							<li><a class="no-scroll" href="#contact">organisers</a></li>
 							<li class="scroll"><a href="#contact">Contact</a></li>
+							<li class="no-scroll"><a href="/login.html">Login/SignUp</a></li>
 						</ul>
 					</div>
 				</div>
@@ -173,7 +192,6 @@
 				</div>
 
 			</div>
-		</div>
 		</div>
 	</section>
 	<!--/#explore-->
@@ -393,18 +411,18 @@
 							<div class="status alert alert-success" style="display: none"></div>
 							<form id="main-contact-form" class="contact-form"
 								name="contact-form" method="post" action="sendemail.php">
-								<div class="form-group">
+								<div class="form-group" id="feedbackGiverName">
 									<input type="text" name="name" id="feedBakerName"
 										class="form-control" required="required" placeholder="Name">
 								</div>
-								<div class="form-group">
+								<div class="form-group" id="feedbackMailAddress">
 									<input type="email" name="email" id="feedBakerMail"
 										class="form-control" required="required"
 										placeholder="Email ID">
 								</div>
 								<div class="form-group">
 									<textarea name="message" id="message" required="required"
-										class="form-control" rows="4" placeholder="Enter your message"></textarea>
+										class="form-control" rows="4" placeholder="Enter your Feedback/Query/Comments"></textarea>
 								</div>
 								<div class="form-group">
 									<button type="button" name="feedbackBtn" id="feedbackBtn"

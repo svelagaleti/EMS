@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var nodemailer = require("nodemailer");
-
+var smtpTransport = require("nodemailer-smtp-transport")
+var google = require("googleapis");
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var Cloudant = require('cloudant');
@@ -16,13 +17,21 @@ var cloudant = new Cloudant({
 	password : password
 });
 
-var transporter = nodemailer
-		.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+var smtpTransport = nodemailer.createTransport(smtpTransport({
+	host : "smtp.gmail.com",
+	secureConnection : false,
+	port : 587,
+	auth : {
+		user : "apple.sandeep.v@gmail.com",
+		pass : "sandeep1991"
+	}
+}));
 
 var app = express();
 
-var db = cloudant.db.use('satya');
-
+var db = cloudant.db.use('ems_users');
+var dbFb = cloudant.db.use('ems_feedback');
+var dbo = cloudant.db.use('ems_orgnisers');
 // cfenv provides access to your Cloud Foundry environment
 // for more info, see: https://www.npmjs.com/package/cfenv
 var cfenv = require('cfenv');
@@ -78,15 +87,16 @@ function isEmpty(obj) {
 	return true;
 }
 
-function getRandomPassword() {
-	var charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz0123456789";
+function getRandomCode() {
+	var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz0123456789";
 	var rand;
-	var retrunString = "";
+	var charec = '';
 	for (var i = 0; i < 8; i++) {
-		returnString += charSet.charAt(Math.floor(Math.random()
-				* (charSet.length - 0 + 1)) + 0);
+		rand = Math.floor(Math.random() * str.length);
+		charec += str.charAt(rand);
 	}
-	return returnString;
+	console.log(charec);
+	return charec;
 }
 // feedback process code how to send the feed back and update the feedback with
 // ld feedback for the same user*/
@@ -96,13 +106,13 @@ app.post('/submitFeedback', function(req, res) {
 	var fbkrMail = req.body.fbkrMail;
 	var fback = req.body.fback;
 
-	db.get(fbkrMail, function(err, data) {
+	dbFb.get(fbkrMail, function(err, data) {
 		console.log(err);
 		if (!isEmpty(data)) {
 			var feedbackJson = JSON.stringify(data);
 			var feedbackStringJSON = JSON.parse(feedbackJson);
 			feedbackStringJSON.feedback = fback;
-			db.insert({
+			dbFb.insert({
 				_id : fbkrMail,
 				_rev : feedbackStringJSON._rev,
 				name : fbkrName,
@@ -112,7 +122,7 @@ app.post('/submitFeedback', function(req, res) {
 				res.send("<h1>feedback updated successfully</h1>");
 			});
 		} else {
-			db.insert({
+			dbFb.insert({
 				_id : fbkrMail,
 				name : fbkrName,
 				feedback : fback
@@ -132,7 +142,7 @@ app.post('/registration', function(req, res) {
 		mobile : req.body.mobile
 	}, function(err, data) {
 		console.log(err);
-		res.send("<h1>Registration done</h1>");
+		res.send("registered");
 	});
 });
 
@@ -140,49 +150,83 @@ app.post('/login', function(req, res) {
 	var mailAddr = req.body.mailAddr;
 	var password = req.body.password;
 	db.get(mailAddr, function(err, data) {
-		if (isEmpty(data)) {
-			res.send("falseUserName");
+		var loginJson = JSON.stringify(data);
+		var loginStringJSON = JSON.parse(loginJson);
+		if (loginStringJSON.password !== password) {
+			res.send("falsePassword");
 		} else {
-			var loginJson = JSON.stringify(data);
-			var loginStringJSON = JSON.parse(loginJson);
-			if (loginStringJSON.password !== password) {
-				res.send("falsePassword");
-			} else {
-				res.send("login");
-			}
+			res.send(loginStringJSON.name.split(" ")[0]);
 		}
 	});
 });
 
 app.post('/forgotPassword', function(req, res) {
 	var mailAddr = req.body.mailAddr;
+	var randomPassword = getRandomCode();
 	db.get(mailAddr, function(err, data) {
-		if (isEmpty(data)) {
-			res.send("falseUserName");
-		} else {
-			// random password generation
-			var randomPassword = getRandomPassword();
+		var loginJson = JSON.stringify(data);
+		var loginStringJSON = JSON.parse(loginJson);
 
-			// sending random password to mail here
+		// sending random password to mail here
+		var mailOptions = {
+			from : "apple.sandeep.v@gmail.com",
+			to : mailAddr,
+			subject : "Re: Password Forgotten Request from Evento",
+			text : "Your new Password is : " + randomPassword
+		};
+		console.log(mailOptions);
+		smtpTransport.sendMail(mailOptions, function(error, response) {
+			if (error) {
+				console.log(error);
+				res.end("error");
+			} else {
+				res.end("sent");
+			}
+		});
+		console.log(err);
 
-			// updating random password in db
-			db.insert({
-				_id : mailAddr,
-				password : randomPassword
-			// all other fields too
-			}, function(err, data) {
-				console.log(err);
-				res.send("<h1>feedback submission done</h1>");
-			});
-		}
+		db.insert({
+			_id : mailAddr,
+			_rev : loginStringJSON._rev,
+			name : loginStringJSON.name,
+			password : randomPassword,
+			mobile : loginStringJSON.mobile
+		}, function(err, data) {
+			console.log(err);
+		});
+
+		res.send("<p>New Password has been sent to your mail!</p>");
+	});
+});
+
+app.post('/changePassword', function(req, res) {
+	var mailAddr = req.body.mailAddr;
+	var newPassword = req.body.newPassword;
+	db.get(mailAddr, function(err, data) {
+		var loginJson = JSON.stringify(data);
+		var loginStringJSON = JSON.parse(loginJson);
+
+		db.insert({
+			_id : mailAddr,
+			_rev : loginStringJSON._rev,
+			name : loginStringJSON.name,
+			password : loginStringJSON.password,
+			mobile : loginStringJSON.mobile
+		}, function(err, data) {
+			console.log(err);
+			res.send("true");
+		});
 	});
 });
 
 app.post('/checkRegistration', function(req, res) {
+	console.log(req.body.mailAddr);
 	db.get(req.body.mailAddr, function(err, data) {
 		if (isEmpty(data)) {
+			console.log("false");
 			res.send("false");
 		} else {
+			console.log("true");
 			res.send("true");
 		}
 	});
@@ -193,7 +237,42 @@ module.exports = app;
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
 // start server on the specified port and binding host
-app.listen(appEnv.port, '0.0.0.0', function() {
+var server = app.listen(appEnv.port, '0.0.0.0', function() {
 	// print a message when the server starts listening
 	console.log("server starting on " + appEnv.url);
+});
+
+var OAuth2 = google.auth.OAuth2;
+
+var oauth2Client = new OAuth2(
+		"683149608284-7hd5dhf0lelvfvbojqojqkprllruvc37.apps.googleusercontent.com",
+		"bG1Bs6kXJOCmE_bLYNyYcxRB", "http://localhost:6001/index.html");
+
+var scopes = [ 'https://www.googleapis.com/auth/gmail.modify' ];
+
+var url = oauth2Client.generateAuthUrl({
+	access_type : 'offline',
+	scope : scopes
+});
+app.get("/url", function(req, res) {
+	res.send(url);
+});
+
+app.get("/tokens", function(req, res) {
+	var code = req.query.code;
+	console.log(code);
+	oauth2Client.getToken(code, function(err, tokens) {
+		if (err) {
+			console.log(err);
+			res.send(err);
+			return;
+		}
+		console.log("allright!!!!");
+		console.log(err);
+		console.log(tokens);
+		oauth2Client.setCredentials(tokens);
+
+		res.send(tokens);
+
+	});
 });
