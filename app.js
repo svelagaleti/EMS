@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var nodemailer = require("nodemailer");
-var smtpTransport = require("nodemailer-smtp-transport")
+var smtpTransport = require("nodemailer-smtp-transport");
 var google = require("googleapis");
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -50,6 +50,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 app.use('/', routes);
 app.use('/users', users);
 
@@ -60,12 +61,10 @@ app.get('/index', function(req, res) {
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 function isEmpty(obj) {
-
 	// null and undefined are "empty"
 	if (obj == null) {
 		return true;
 	}
-
 	// Assume if it has a length property with a non-zero value
 	// that that property is correct.
 	if (obj.length > 0) {
@@ -74,7 +73,6 @@ function isEmpty(obj) {
 	if (obj.length === 0) {
 		return true;
 	}
-
 	// Otherwise, does it have any properties of its own?
 	// Note that this doesn't handle
 	// toString and valueOf enumeration bugs in IE < 9
@@ -83,7 +81,6 @@ function isEmpty(obj) {
 			return false;
 		}
 	}
-
 	return true;
 }
 
@@ -243,20 +240,50 @@ var server = app.listen(appEnv.port, '0.0.0.0', function() {
 });
 
 var OAuth2 = google.auth.OAuth2;
+var gmail = google.gmail('v1');
+var plus = google.plus('v1');
 
-var oauth2Client = new OAuth2(
-		"683149608284-7hd5dhf0lelvfvbojqojqkprllruvc37.apps.googleusercontent.com",
-		"bG1Bs6kXJOCmE_bLYNyYcxRB", "http://localhost:6001/index.html");
+var oauth2Client = new OAuth2('683149608284-7hd5dhf0lelvfvbojqojqkprllruvc37.apps.googleusercontent.com', 'Ex90r0EvEplQBSUEU25Xsaoc', 'http://localhost:6001/oauthcallback');
 
-var scopes = [ 'https://www.googleapis.com/auth/gmail.modify' ];
+var scopes = [ 'https://www.googleapis.com/auth/gmail.readonly',
+		'https://www.googleapis.com/auth/plus.me',
+		'https://www.googleapis.com/auth/calendar' ];
 
 var url = oauth2Client.generateAuthUrl({
 	access_type : 'offline',
-	scope : scopes
+	scope : scopes.join(" ")
 });
+google.options({auth: oauth2Client});
+
+
 app.get("/url", function(req, res) {
 	res.send(url);
 });
+
+app.get("/eventRegistration", function(req, res){
+	var eventName = req.body.mailAddr;
+	var eventStartDate = req.body.eventStartDate;
+	var eventEndDate = req.body.eventEndDate;
+	var eventStartTime = req.body.eventStartTime;
+	var eventEndTime = req.body.eventEndTime;
+	var eventDescription = req.body.eventDescription;
+	var eventVenue = req.body.eventVenue;
+	var eventOrganiserName1 = req.body.eventOrganiserName1;
+	var eventOrganiserMail1 = req.body.eventOrganiserMail1;
+	var eventOrganiserMobile1 = req.body.eventOrganiserMobile1;
+	var eventOrganiserName2 = req.body.eventOrganiserName2;
+	var eventOrganiserMail2 = req.body.eventOrganiserMail2;
+	var eventOrganiserMobile2 = req.body.eventOrganiserMobile2;
+	var eventOrganiserName3 = req.body.eventOrganiserName3;
+	var eventOrganiserMail3 = req.body.eventOrganiserMail3;
+	var eventOrganiserMobile3 = req.body.eventOrganiserMobile3;
+	var mailAlerts = req.body.mailAlerts;
+	var mobileAlerts = req.body.mobileAlerts;
+	var eventType = req.body.eventType;
+	var numberOfAttendees = req.body.numberOfAttendes;
+	
+});
+
 
 app.get("/tokens", function(req, res) {
 	var code = req.query.code;
@@ -264,15 +291,45 @@ app.get("/tokens", function(req, res) {
 	oauth2Client.getToken(code, function(err, tokens) {
 		if (err) {
 			console.log(err);
-			res.send(err);
 			return;
 		}
-		console.log("allright!!!!");
-		console.log(err);
-		console.log(tokens);
+
 		oauth2Client.setCredentials(tokens);
 
-		res.send(tokens);
-
+		plus.people.get({
+			userId : 'me',
+			auth : oauth2Client
+		}, function(err, response1) {
+			gmail.users.getProfile({
+				auth : oauth2Client,
+				userId : 'me',
+			}, function(err, response) {
+				if (err) {
+					console.log('The API returned an error: ' + err);
+					return;
+				}
+				var gmailJson = JSON.stringify(response);
+				var gmailStringJSON = JSON.parse(gmailJson);
+				var gPlusJson = JSON.stringify(response1);
+				var gPlusStringJSON = JSON.parse(gPlusJson);
+				var returnResponse = gmailStringJSON.emailAddress + " " + gPlusStringJSON.displayName;
+				
+				db.get(gmailStringJSON.emailAddress, function(err, data) {
+					console.log(err);
+					if (!isEmpty(data)) {
+						var loginData = JSON.parse(JSON.stringify(data));
+						res.send(gmailStringJSON.emailAddress +" "+loginData.name.split(" ")[0]);
+					} else {
+						db.insert({
+							_id : gmailStringJSON.emailAddress,
+							name : gPlusStringJSON.displayName
+						}, function(err, data) {
+							console.log(err);
+							res.send(gmailStringJSON.emailAddress +" "+gPlusStringJSON.displayName.split(" ")[0]);
+						});
+					}
+				});
+			});
+		});
 	});
 });

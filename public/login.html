@@ -220,7 +220,7 @@ body, html {
 						alert("Authentication Done");
 						sessionStorage.setItem("userName", responseText);
 						sessionStorage.setItem("userMail", mailAddr);
-						$(location).attr('href', '/index')
+						$(location).attr('href', '/index');
 					}
 				});
 			});
@@ -327,27 +327,33 @@ body, html {
 	
 	<script>
 		var app = angular.module("app", []);
-		app.controller("ctrl", function($scope, $http, $window) {
+		app.controller("ctrl",['$compile', '$scope', '$window', '$http', function($compile, $scope, $window, $http){
 			var url;
 			var windowThatWasOpened;
 			$http.get("url").then(function(reponse) {
 				url = reponse.data;
+				alert(url);
 			});
 			$scope.login = function() {
 				alert("ASdf");
-				windowThatWasOpened = $window.open(url);
+				windowThatWasOpened = $window.open(url, "Google Authentication", "width=500,height=400");
 			};
 			window.onmessage = function(e) {
-				windowThatWasOpened.close()
+				var access_token;
+				windowThatWasOpened.close();
 				var urlWithCode = e.data;
 				var idx = urlWithCode.lastIndexOf("code=");
 				var code = urlWithCode.substring(idx + 5).replace("#", "");
-				console.log(code);
-				$http.get("tokens?code=" + code).then(function(reponse) {
-					console.log(response.data);
+				alert(code);
+				$http.get("tokens?code=" + code).then(function(response) {
+					alert("1234");
+					var data = JSON.parse(JSON.stringify(response)).data.split(" ");
+					sessionStorage.setItem("userName", data[1]);
+					sessionStorage.setItem("userMail", data[0]);
+					$(location).attr('href', '/index')
 				});
 			};
-		});
+		}]);
 	</script>
 	
 </body>
