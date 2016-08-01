@@ -333,3 +333,7 @@ app.get("/tokens", function(req, res) {
 		});
 	});
 });
+
+app.get("/addIndividualContact", function(req, res) {
+	
+});
