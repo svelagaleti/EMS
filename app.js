@@ -243,7 +243,9 @@ var OAuth2 = google.auth.OAuth2;
 var gmail = google.gmail('v1');
 var plus = google.plus('v1');
 
-var oauth2Client = new OAuth2('683149608284-7hd5dhf0lelvfvbojqojqkprllruvc37.apps.googleusercontent.com', 'Ex90r0EvEplQBSUEU25Xsaoc', 'http://localhost:6001/oauthcallback');
+var oauth2Client = new OAuth2(
+		'412113795418-eeablc3kphhl2ees0lklv2fnmuehmipa.apps.googleusercontent.com',
+		'tqOiV5ud_NmvgHvpm6rrL_Ul', 'http://localhost:6008/oauthcallback');
 
 var scopes = [ 'https://www.googleapis.com/auth/gmail.readonly',
 		'https://www.googleapis.com/auth/plus.me',
@@ -253,15 +255,17 @@ var url = oauth2Client.generateAuthUrl({
 	access_type : 'offline',
 	scope : scopes.join(" ")
 });
-google.options({auth: oauth2Client});
-
+google.options({
+	auth : oauth2Client
+});
 
 app.get("/url", function(req, res) {
 	res.send(url);
 });
 
-app.get("/eventRegistration", function(req, res){
+app.get("/eventRegistration", function(req, res) {
 	var eventName = req.body.mailAddr;
+	console.log(eventName);
 	var eventStartDate = req.body.eventStartDate;
 	var eventEndDate = req.body.eventEndDate;
 	var eventStartTime = req.body.eventStartTime;
@@ -281,9 +285,7 @@ app.get("/eventRegistration", function(req, res){
 	var mobileAlerts = req.body.mobileAlerts;
 	var eventType = req.body.eventType;
 	var numberOfAttendees = req.body.numberOfAttendes;
-	
 });
-
 
 app.get("/tokens", function(req, res) {
 	var code = req.query.code;
@@ -312,20 +314,26 @@ app.get("/tokens", function(req, res) {
 				var gmailStringJSON = JSON.parse(gmailJson);
 				var gPlusJson = JSON.stringify(response1);
 				var gPlusStringJSON = JSON.parse(gPlusJson);
-				var returnResponse = gmailStringJSON.emailAddress + " " + gPlusStringJSON.displayName;
-				
+				var returnResponse = gmailStringJSON.emailAddress + " "
+						+ gPlusStringJSON.displayName;
+
 				db.get(gmailStringJSON.emailAddress, function(err, data) {
 					console.log(err);
 					if (!isEmpty(data)) {
 						var loginData = JSON.parse(JSON.stringify(data));
-						res.send(gmailStringJSON.emailAddress +" "+loginData.name.split(" ")[0]);
+						res.send(gmailStringJSON.emailAddress + " "
+								+ loginData.name.split(" ")[0]);
 					} else {
 						db.insert({
 							_id : gmailStringJSON.emailAddress,
 							name : gPlusStringJSON.displayName
 						}, function(err, data) {
 							console.log(err);
-							res.send(gmailStringJSON.emailAddress +" "+gPlusStringJSON.displayName.split(" ")[0]);
+							res
+									.send(gmailStringJSON.emailAddress
+											+ " "
+											+ gPlusStringJSON.displayName
+													.split(" ")[0]);
 						});
 					}
 				});
