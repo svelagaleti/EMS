@@ -244,8 +244,8 @@ var gmail = google.gmail('v1');
 var plus = google.plus('v1');
 
 var oauth2Client = new OAuth2(
-		'412113795418-eeablc3kphhl2ees0lklv2fnmuehmipa.apps.googleusercontent.com',
-		'tqOiV5ud_NmvgHvpm6rrL_Ul', 'http://localhost:6008/oauthcallback');
+		'683149608284-7hd5dhf0lelvfvbojqojqkprllruvc37.apps.googleusercontent.com',
+		'Ex90r0EvEplQBSUEU25Xsaoc', 'http://localhost:6001/oauthcallback');
 
 var scopes = [ 'https://www.googleapis.com/auth/gmail.readonly',
 		'https://www.googleapis.com/auth/plus.me',
@@ -340,4 +340,8 @@ app.get("/tokens", function(req, res) {
 			});
 		});
 	});
+});
+
+app.get("/addIndividualContact", function(req, res) {
+
 });

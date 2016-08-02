@@ -5,14 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
-<title>Evento | Free Onepage Event Template | ShapeBootstrap</title>
+<title>Evento</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <link href="css/main.css" rel="stylesheet">
 <link href="css/animate.css" rel="stylesheet">
 <link href="css/responsive.css" rel="stylesheet">
+<<<<<<< HEAD
 
 
+=======
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+>>>>>>> branch 'newver' of https://github.com/svelagaleti/EMS.git
 <!--[if lt IE 9]>
 	    <script src="js/html5shiv.js"></script>
 	    <script src="js/respond.min.js"></script>
@@ -23,42 +33,310 @@
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
 <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
  -->
-<!-- jquery AJAX Calls -->
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<style type="text/css">
+/*
+ * Specific styles of signin component
+ */
+/*
+ * General styles
+ */
+.card-container.card {
+	width: 350px;
+	padding: 20px 40px;
+}
+
+.btn {
+	font-weight: 700;
+	height: 36px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+/*
+ * Card component
+ */
+.card {
+	background-color: #fff;
+	/* shadows and rounded borders */
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 35px;
+	-moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/*
+ * Form styles
+ */
+.reauth-email {
+	display: block;
+	color: #404040;
+	line-height: 2;
+	margin-bottom: 10px;
+	font-size: 14px;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.form-signin #inputEmail, .form-signin #inputPassword {
+	direction: ltr;
+	height: 44px;
+	font-size: 16px;
+}
+
+.form-signin input[type=email], .form-signin input[type=password],
+	.form-signin input[type=text], .form-signin button {
+	width: 100%;
+	display: block;
+	margin-bottom: 10px;
+	z-index: 1;
+	position: relative;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.form-signin .form-control:focus {
+	border-color: #0685FF;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px #0066CC;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px #0066CC;
+}
+
+.btn-signin {
+	/*background-color: #4d90fe; */
+	background-color: #0066CC;
+	/* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+	padding: 0px;
+	font-weight: 700;
+	font-size: 14px;
+	height: 36px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: none;
+	-o-transition: all 0.218s;
+	-moz-transition: all 0.218s;
+	-webkit-transition: all 0.218s;
+	transition: all 0.218s;
+}
+
+.btn-signin:hover, .btn-signin:active, .btn-signin:focus {
+	background-color: #0685FF;
+}
+
+.forgot-password {
+	color: #0685FF;
+}
+
+.forgot-password:hover, .forgot-password:active, .forgot-password:focus
+	{
+	color: #004e99;
+}
+</style>
+
+<!-- jquery AJAX Calls -->
 <script>
-	$(document).ready(function() {
-		var mail = sessionStorage.getItem("userMail");
-		alert(mail);
-		var name = sessionStorage.getItem("userName");
-		alert(name);
-		if(sessionStorage.getItem("userMail") !== null){
-			$('#feedbackMailAddress').html("<input type=\"email\" value=\""+sessionStorage.getItem("userMail")+"\" name=\"email\" id=\"feedBakerMail\" class=\"form-control\" required=\"required\" disabled=\"disabled\">");
-			$('#feedbackGiverName').html("<input type=\"text\" value=\""+sessionStorage.getItem("userName")+"\" name=\"name\" id=\"feedBakerName\" class=\"form-control\" required=\"required\" disabled=\"disabled\">");
-			$('#sessionCheckLogin').html("<ul class=\"nav navbar-nav navbar-right\">"+
-					"<li class=\"scroll active\"><a href=\"#home\">Home</a></li>"+
-					"<li class=\"scroll\"><a href=\"#explore\">Events</a></li>"+
-					"<li class=\"scroll\"><a href=\"#about\">About</a></li>"+
-					"<li class=\"no-scroll\"><a href=\"#reg\">Register ur event</a></li>"+
-					"<li><a class=\"no-scroll\" href=\"#contact\">organisers</a></li>"+
-					"<li class=\"scroll\"><a href=\"#contact\">Contact</a></li>"+
-					"<li class=\"no-scroll\"><a href=\"\">My Account</a></li>"+
-					"</ul>");
-		}
-		
-		
-		$("#feedbackBtn").click(function() {
-			alert("feedback button");
-			$.post("/submitFeedback", {
-				fbkrName : $('#feedBakerName').val(),
-				fbkrMail : $('#feedBakerMail').val(),
-				fback : $('#message').val()
-			}, function(responseHTML) {
-				$('#contact-section').html(responseHTML);
-			});
+	$(document)
+			.ready(
+					function() {
+						if (sessionStorage.getItem("userMail") !== null) {
+							$('#feedbackMailAddress')
+									.html(
+											"<input type=\"email\" value=\""
+													+ sessionStorage
+															.getItem("userMail")
+													+ "\" name=\"email\" id=\"feedBakerMail\" class=\"form-control\" required=\"required\" disabled=\"disabled\">");
+							$('#feedbackGiverName')
+									.html(
+											"<input type=\"text\" value=\""
+													+ sessionStorage
+															.getItem("userName")
+													+ "\" name=\"name\" id=\"feedBakerName\" class=\"form-control\" required=\"required\" disabled=\"disabled\">");
+							$('#sessionCheckLogin')
+									.html(
+											"<ul class=\"nav navbar-nav navbar-right\">"
+													+ "<li class=\"scroll active\"><a href=\"#home\">Home</a></li>"
+													+ "<li class=\"scroll\"><a href=\"#explore\">Events</a></li>"
+													+ "<li class=\"scroll\"><a href=\"#about\">About</a></li>"
+													+ "<li class=\"scroll\"><a href=\"#reg\">Register ur event</a></li>"
+													+ "<li><a class=\"no-scroll\" href=\"#contact\">organisers</a></li>"
+													+ "<li class=\"scroll\"><a href=\"#contact\">Contact</a></li>"
+													+ "<li class=\"dropdown\"><a class=\"dropdown-toggle\" data-toggle=\"dropdown\">My account</a>"
+													+ "<ul class=\"dropdown-menu\">"
+													+ "<li><a href=\"#contact\">Profile</a></li>"
+													+ "<li><a href=\"reset.html\">Change password</a></li>"
+													+ "<li><a id=\"logOutBtn\">Log out</a></li></ul></li>"
+													+ "</ul>");
+						}
+					});
+</script>
+<script>
+	$(document)
+			.ready(
+					function() {
+						$("#paid").click(function() {
+							$("#public").hide();
+							$("#private").hide();
+						});
+						$("#feedbackBtn").click(function() {
+							$.post("/submitFeedback", {
+								fbkrName : $('#feedBakerName').val(),
+								fbkrMail : $('#feedBakerMail').val(),
+								fback : $('#message').val()
+							}, function(responseHTML) {
+								$('#contact-section').html(responseHTML);
+							});
+						});
+						$("#public").click(function() {
+							$("#paid").hide();
+							$("#private").hide();
+						});
+						$("#private").click(function() {
+							$("#public").hide();
+							$("#paid").hide();
+						});
+						$(document).on("click", "#logOutBtn", function() {
+							sessionStorage.clear();
+							$(location).attr('href', '');
+						});
+						var mailAddr;
+						$("#checkInBtn")
+								.click(
+										function() {
+											mailAddr = $('#loginEmail').val();
+											$
+													.post(
+															"/checkRegistration",
+															{
+																mailAddr : mailAddr,
+															},
+															function(
+																	responseText) {
+																if (responseText === "false") {
+																	$(
+																			'#mailValidation')
+																			.html(
+																					"<input type=\"email\" id=\"loginEmail\" value=\""+mailAddr+"\" class=\"form-control\" required disabled>"
+																							+ "<input type=\"text\" id=\"regName\" class=\"form-control\" placeholder=\"First Name    Last Name\" required autofocus>"
+																							+ "<input type=\"password\" id=\"regPassword\" class=\"form-control\" placeholder=\"Create Password\" required>"
+																							+ "<input type=\"password\" id=\"regCfmPwd\" class=\"form-control\" placeholder=\"Confirm Password\" required>"
+																							+ "<input type=\"text\" id=\"regMobile\" class=\"form-control\" placeholder=\"mobile number\" required autofocus>"
+																							+ "<input class=\"btn btn-lg btn-primary btn-block btn-signin\" type=\"button\" id=\"regBtn\" value=\"Sign Up\" />");
+																} else if (responseText === "true") {
+																	$(
+																			'#mailValidation')
+																			.html(
+																					"<input type=\"email\" id=\"loginEmail\" class=\"form-control\" value=\""+mailAddr+"\" required disabled>"
+																							+ "<input type=\"password\" id=\"loginPassword\" class=\"form-control\" placeholder=\"Password\" required>"
+																							+ "<div id=\"loginValid\"></div>"
+																							+ "<input class=\"btn btn-lg btn-primary btn-block btn-signin\" id=\"signInBtn\" value=\"Sign in!\" type=\"button\" />"
+																							+ "<div id=\"forgotPwdBlock\"><button id=\"forgotPassword\" class=\"forgot-password\" style=\"background:none;border:none;\">Forgot your password?</button></div></div>");
+																}
+															});
+										});
+
+						$(document).on("click", "#forgotPassword", function() {
+							mailAddr = $('#loginEmail').val();
+							$.post("/forgotPassword", {
+								mailAddr : mailAddr
+							}, function(responseHTML) {
+								$('#forgotPwdBlock').html(responseHTML);
+							});
+						});
+
+						$(document)
+								.on(
+										"click",
+										"#signInBtn",
+										function() {
+											mailAddr = $('#loginEmail').val();
+											password = $('#loginPassword')
+													.val();
+											$
+													.post(
+															"/login",
+															{
+																mailAddr : mailAddr,
+																password : password
+															},
+															function(
+																	responseText) {
+																if (responseText === "falsePassword")
+																	$(
+																			'#loginValid')
+																			.html(
+																					"<p>Authentication Failed</p>");
+																else {
+																	sessionStorage
+																			.setItem(
+																					"userName",
+																					responseText);
+																	sessionStorage
+																			.setItem(
+																					"userMail",
+																					mailAddr);
+																	$(location)
+																			.attr(
+																					'href',
+																					'/index');
+																}
+															});
+										});
+						$(document).on(
+								"click",
+								"input#regBtn",
+								function() {
+									var mailAddr = $('#loginEmail').val();
+									var password = $('#regPassword').val();
+									var password = $('#Cnfpwd').val();
+									var name = $('#regName').val();
+									var mobile = $('#regMobile').val();
+									$.post("/registration", {
+										mailAddr : mailAddr,
+										password : password,
+										name : name,
+										mobile : mobile
+									}, function(responseText) {
+										if (responseText === "registered") {
+											sessionStorage.setItem("userName",
+													name.split(" ")[0]);
+											sessionStorage.setItem("userMail",
+													mailAddr);
+											$(location).attr('href', '/index')
+										}
+									});
+								});
+					});
+</script>
+<script>
+	$(function() {
+		$("#dialog").dialog({
+			autoOpen : false,
+			show : {
+				effect : "blind",
+				duration : 1000
+			},
+			hide : {
+				effect : "explode",
+				duration : 1000
+			}
+		});
+
+		$("#myLoginPopup").on("click", function() {
+			$("#dialog").dialog("open");
 		});
 	});
+<<<<<<< HEAD
 	$("#customerRegistration").click(function() {
 		alert("customerRegistration");
 		$.post("/customerRegistration", {
@@ -120,34 +398,48 @@
 					});
                 });
             });
+=======
+	;
+>>>>>>> branch 'newver' of https://github.com/svelagaleti/EMS.git
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script>
-	$(document).ready(function(){
-    $("#paid").click(function(){
-        $("#public").hide();
-		$("#private").hide();
-    });
-	});
-	</script>
-	<script>
-	$(document).ready(function(){
-    $("#public").click(function(){
-        $("#paid").hide();
-		$("#private").hide();
-    });
-	});
-	</script>
-	<script>
-	$(document).ready(function(){
-    $("#private").click(function(){
-        $("#public").hide();
-		$("#paid").hide();
-    });
-	});
-	</script>
-
-
+<script>
+	var app = angular.module("app", []);
+	app.controller("ctrl", [
+			'$compile',
+			'$scope',
+			'$window',
+			'$http',
+			function($compile, $scope, $window, $http) {
+				var url;
+				var windowThatWasOpened;
+				$http.get("url").then(function(reponse) {
+					url = reponse.data;
+				});
+				$scope.login = function() {
+					windowThatWasOpened = $window.open(url,
+							"Google Authentication", "width=500,height=400");
+				};
+				window.onmessage = function(e) {
+					var access_token;
+					windowThatWasOpened.close();
+					var urlWithCode = e.data;
+					var idx = urlWithCode.lastIndexOf("code=");
+					var code = urlWithCode.substring(idx + 5).replace("#", "");
+					$http.get("tokens?code=" + code)
+							.then(
+									function(response) {
+										var data = JSON.parse(JSON
+												.stringify(response)).data
+												.split(" ");
+										sessionStorage.setItem("userName",
+												data[1]);
+										sessionStorage.setItem("userMail",
+												data[0]);
+										$(location).attr('href', '/index')
+									});
+				};
+			} ]);
+</script>
 </head>
 <!--/head-->
 
@@ -181,11 +473,38 @@
 							<li class="scroll"><a href="#explore">Events</a></li>
 							<!--<li class="scroll"><a href="#event">Events</a></li>-->
 							<li class="scroll"><a href="#about">About</a></li>
-							<li class="no-scroll"><a href="#sponsor">Register ur event</a></li>
+							<li class="scroll"><a href="#sponsor">Register ur event</a></li>
 							<li><a class="no-scroll" href="#contact">organisers</a></li>
 							<li class="scroll"><a href="#contact">Contact</a></li>
-							<li class="no-scroll"><a href="/login.html">Login/SignUp</a></li>
+							<li class="scroll"><a id="myLoginPopup"
+								title="Login/Sign-Up">Login/Sign-Up</a></li>
 						</ul>
+						<div id="dialog">
+							<div ng-app="app" ng-controller="ctrl">
+								<div class="container">
+									<div class="card card-container">
+										<form id="login" class="form-signin">
+											<span id="reauth-email" class="reauth-email"></span>
+											<div id="mailValidation">
+												<input type="email" id="loginEmail"
+													placeholder="Mail Address" class="form-control\" required
+													autofocus="autofocus"> <input
+													class="btn btn-lg btn-primary btn-block btn-signin"
+													id="checkInBtn" value="Get Me In!" type="button" />
+												<div align="center">
+													<font color="#1B7B90">or</font>
+												</div>
+												<div align="center">
+													<img src="images/googleButton.png" ng-click="login()" />
+												</div>
+											</div>
+										</form>
+										<!-- /form -->
+									</div>
+									<!-- /card-container -->
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -369,11 +688,12 @@
 				player looking to move to the next level. Lorem Ipsum is simply
 				dummy text of the printing and typesetting industry. Lorem Ipsum has
 				been the industry's standard dummy text ever since the 1500s</p>
-			<a href="#" class="btn btn-primary">View Date & Place <i
+			<a href="#" class="btn btn-primary">View Date and Place <i
 				class="fa fa-angle-right"></i></a>
 
 		</div>
 	</section>
+<<<<<<< HEAD
 	<!--Event Registration form-->
 			<section id="sponsor">
 	<form>
@@ -385,7 +705,263 @@
 				<div class="row">
 				<div class="col-md-3"><strong>Event Name *</strong></div>
 				<div class="col-md-3"><input placeholder="Enter name of the event" id="company" name="company"  type="text" required>
+=======
+	<!--/#about-->
+
+	<!--<section id="twitter">
+		<div id="twitter-feed" class="carousel slide" data-interval="false">
+			<div class="twit">
+				<img class="img-responsive" src="images/twit.png" alt="twit">
+			</div>
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-3">
+					<div class="text-center carousel-inner center-block">
+						<div class="item active">
+							<img src="images/twitter/twitter1.png" alt="">
+							<p>In hac habitasse platea dictumst. Nam pulvinar, odio sed rhoncus suscipit </p>
+							<a href="#">http://t.co/yY7s1IfrAb 2 days ago</a>
+						</div>
+						<div class="item">
+							<img src="images/twitter/twitter2.png" alt="">
+							<p>In hac habitasse platea dictumst. Nam pulvinar, odio sed rhoncus suscipit </p>
+							<a href="#">http://t.co/yY7s1IfrAb 2 days ago</a>
+						</div>
+						<div class="item">
+							<img src="images/twitter/twitter3.png" alt="">
+							<p>In hac habitasse platea dictumst. Nam pulvinar, odio sed rhoncus suscipit </p>
+							<a href="#">http://t.co/yY7s1IfrAb 2 days ago</a>
+						</div>
+					</div>
+					<a class="twitter-control-left" href="#twitter-feed" data-slide="prev"><i class="fa fa-angle-left"></i></a>
+					<a class="twitter-control-right" href="#twitter-feed" data-slide="next"><i class="fa fa-angle-right"></i></a>
 				</div>
+			</div>
+		</div>		
+	</section>/#twitter-feed-->
+
+	<!-- <section id="sponsor">
+		<div id="sponsor-carousel" class="carousel slide"
+			data-interval="false">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-10">
+						<h2>Sponsors</h2>
+						<a class="sponsor-control-left" href="#sponsor-carousel"
+							data-slide="prev"><i class="fa fa-angle-left"></i></a> <a
+							class="sponsor-control-right" href="#sponsor-carousel"
+							data-slide="next"><i class="fa fa-angle-right"></i></a>
+						<div class="carousel-inner">
+							<div class="item active">
+								<ul>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor1.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor2.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor3.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor4.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor5.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor6.png" alt=""></a></li>
+								</ul>
+							</div>
+							<div class="item">
+								<ul>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor6.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor5.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor4.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor3.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor2.png" alt=""></a></li>
+									<li><a href="#"><img class="img-responsive"
+											src="images/sponsor/sponsor1.png" alt=""></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> -->
+
+	<section id="sponsor">
+		<form>
+			<div id="sponsor-carousel" class="carousel slide"
+				data-interval="false">
+				<div class="container" style="min-height: 500px;">
+					<div class="row">
+						<div class="col-sm-12">
+							<h2>Registration</h2>
+							<div class="col-3" style="width: 100%">
+								<label style="padding-left: 20%"> Event Name* <input
+									placeholder="Enter name of the event" id="company"
+									name="company" tabindex="2" type="text" required>
+
+								</label> <label> Location* &nbsp;&nbsp;:&nbsp; <input
+									placeholder=" Enter event venue" id="Venue" name="Venue"
+									tabindex="4" type="text" required>
+
+								</label>
+							</div>
+							<div class="col-3" style="width: 100%;">
+								<h3 style="margin-bottom: 0px;">Event date*</h3>
+								<br /> <label style="padding-left: 10%">From <input
+									placeholder=" Enter date of the event" style="height: 30px;"
+									id="company" name="company" tabindex="3" type="date" required></label>
+								<label>To <input placeholder=" Enter date of the event"
+									style="height: 30px;" id="company" name="company" tabindex="3"
+									type="date" required></label> <label>Timings* <input
+									placeholder="Event timings" id="email" style="height: 30px;"
+									name="email" tabindex="5" type="time" required>
+
+								</label>
+							</div>
+
+							<div class="col-8" style="width: 100%; padding-left: 15%">
+								<label style="padding-left: 205px; padding-top: 27px;">
+									Description*<textarea rows="3" cols="50"
+										placeholder="Enter the description" id="name"
+										name="Description" required>
+											</textarea>
+								</label>
+							</div>
+							<h3>Details</h3>
+							<div class="col-3" style="width: 100%">
+								<div>
+									Name of the organizer*&nbsp;&nbsp;&nbsp; <input
+										placeholder="Enter your name" id="name" name="name"
+										tabindex="1" type="text" required>
+									&nbsp;&nbsp;&nbsp;Mobile number*&nbsp;&nbsp; <input
+										placeholder="Enter your mobile number" id="experience"
+										name="experience" tabindex="8" type="text" required>
+									&nbsp; Email*&nbsp;&nbsp;&nbsp;&nbsp; <input
+										placeholder="Enter your email" id="skills" name="skills"
+										tabindex="7" type="email" required><br />
+								</div>
+								<br />
+								<div>
+									Name of the organizer&nbsp;&nbsp;&nbsp;&nbsp; <input
+										placeholder="Enter your name" id="name" name="name"
+										tabindex="1" type="text" required>
+									&nbsp;&nbsp;&nbsp;&nbsp; Mobile number &nbsp;&nbsp;&nbsp; <input
+										placeholder="Enter your mobile number" id="experience"
+										name="experience" tabindex="8" type="text" required>
+									&nbsp;&nbsp;Email &nbsp;&nbsp;&nbsp;&nbsp; <input
+										placeholder="Enter your email" id="skills" name="skills"
+										tabindex="7" type="email" required>
+								</div>
+							</div>
+							<div class="col-sm-12">
+
+								<div class="col-8" style="width: 100%">
+									<label style="float: left">Do you want email alerts? <label
+										class="switch"> <input type="checkbox" checked>
+											<div class="slider round"></div>
+									</label>
+
+									</label> <label>Do you want mobile alerts? <label
+										class="switch"> <input type="checkbox" checked>
+											<div class="slider round"></div>
+									</label> <!-- <input type="checkbox" class="js-switch">-->
+									</label>
+								</div>
+
+							</div>
+
+
+
+
+							<div class="container">
+								<label>Event Type*</label>
+								<!-- Trigger the modal with a button -->
+								<button type="button" class="btn btn-info btn-lg" id="public"
+									data-toggle="modal" data-target="#myModal">Public</button>
+								<!-- Modal -->
+								<div class="modal fade" id="myModal" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="head5" align="center"
+												style="padding-bottom: 100px; padding-right: 119px; color: black;">
+												Estimated Attendies<input type="text" name="attendies"
+													placeholder="Enter Number of Attendies" required />
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Trigger the modal with a button -->
+								<button type="button" id="private" class="btn btn-info btn-lg"
+									data-toggle="modal" data-target="#myModal1">Private</button>
+								<!-- Modal -->
+								<div class="modal fade" id="myModal1" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="head5" align="center"
+												style="padding-left: 10%; padding-bottom: 93px; padding-right: 119px; color: black;">
+												<p style="float: left; padding-left: 55px;">CSV-File:</p>
+												<input type="file" name="CSV-file"
+													style="float: rigth; width: 62%"><br>
+												<!--Description<input type="text" name="Description" placeholder="Enter your Description" style="folat:right" required />
+						-->
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+								<!-- Trigger the modal with a button -->
+								<button type="button" class="btn btn-info btn-lg" id="paid"
+									data-toggle="modal" data-target="#myModal2">Paid</button>
+								<!-- Modal -->
+								<div class="modal fade" id="myModal2" role="dialog">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+											<div class="head5" align="center"
+												style="padding-bottom: 100px; padding-right: 119px; color: black; padding-left: 40px;">
+												<table style="align: center">
+													<tr>
+														<td><label style="width: 430px; padding-left: 61px;">Number
+																Of Tickets:<input type="text" name="cost"
+																placeholder="Enter Ticket Cost" required />
+														</label></td>
+													</tr>
+													<tr>
+														<td><label style="width: 485px; padding-left: 114px;">Ticket
+																Cost:<input type="text" name="Attendies"
+																placeholder="Enter Cost" required />
+														</label></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div style="text-align: center; color: black">
+							<!--input type="Submit" name="Submit" Value="submit"-->
+							<button class="button button2" name="customerbtn">Submit</button>
+						</div>
+					</div>
+>>>>>>> branch 'newver' of https://github.com/svelagaleti/EMS.git
+				</div>
+<<<<<<< HEAD
 				<div class="col-md-3"><strong>Venue *</strong></div>
 				<div class="col-md-3"><input placeholder=" Enter event venue" id="Venue" name="Venue" type="text" required>
 				</div>
@@ -614,6 +1190,85 @@ $(document).ready(function(){
 												class="btn btn-primary pull-right">Send</button>
 										</div>
 									</form>
+=======
+			</div>
+			<!--
+			<div class="light">
+				<img class="img-responsive" src="images/light.png" alt="">
+			</div>-->
+		</form>
+	</section>
+	<!--/#sponsor-->
+	<!--
+									<div class="light">
+										<img class="img-responsive" src="images/light.png" alt="">
+									</div>-->
+	</div>
+	</form>
+	</section>
+	<!--/#sponsor-->
+	<!-- <div class="light">
+										<img class="img-responsive" src="images/light.png" alt="">
+									</div> -->
+	</div>
+	</section>
+	<!--/#sponsor-->
+
+	<section id="contact">
+		<div id="map">
+			<div id="gmap-wrap">
+				<div id="gmap"></div>
+			</div>
+		</div>
+		<!--/#map-->
+		<div class="contact-section">
+			<div class="ear-piece">
+				<img class="img-responsive" src="images/ear-piece.png" alt="">
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-3 col-sm-offset-4">
+						<div class="contact-text">
+							<h3>Contact</h3>
+							<address>
+								E-mail: plokam@miraclesoft.com<br> Phone: 1-248-233-1187<br>
+								Fax: +1 (123) 456 7891
+							</address>
+						</div>
+						<div class="contact-address">
+							<h3>Address</h3>
+							<address>
+								Miracle city.,<br> Bhogapuram,<br> VZM, Andhra Pradesh<br>
+								India
+							</address>
+						</div>
+					</div>
+					<div class="col-sm-5">
+						<div id="contact-section">
+							<h3>Send a message</h3>
+							<div class="status alert alert-success" style="display: none"></div>
+							<form id="main-contact-form" class="contact-form"
+								name="contact-form" method="post" action="sendemail.php">
+								<div class="form-group" id="feedbackGiverName">
+									<input type="text" name="name" id="feedBakerName"
+										class="form-control" required="required" placeholder="Name">
+								</div>
+								<div class="form-group" id="feedbackMailAddress">
+									<input type="email" name="email" id="feedBakerMail"
+										class="form-control" required="required"
+										placeholder="Email ID">
+								</div>
+								<div class="form-group">
+									<textarea name="message" id="message" required="required"
+										class="form-control" rows="4"
+										placeholder="Enter your Feedback/Query/Comments"></textarea>
+								</div>
+								<div class="form-group">
+									<button type="button" name="feedbackBtn" id="feedbackBtn"
+										class="btn btn-primary pull-right">Send</button>
+								</div>
+							</form>
+>>>>>>> branch 'newver' of https://github.com/svelagaleti/EMS.git
 						</div>
 					</div>
 				</div>
@@ -635,17 +1290,5 @@ $(document).ready(function(){
 		</div>
 	</footer>
 	<!--/#footer-->
-
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript"
-		src="http://maps.google.com/maps/api/js?sensor=true"></script>
-	<script type="text/javascript" src="js/gmaps.js"></script>
-	<script type="text/javascript" src="js/smoothscroll.js"></script>
-	<script type="text/javascript" src="js/jquery.parallax.js"></script>
-	<script type="text/javascript" src="js/coundown-timer.js"></script>
-	<script type="text/javascript" src="js/jquery.scrollTo.js"></script>
-	<script type="text/javascript" src="js/jquery.nav.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
